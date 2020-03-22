@@ -33,7 +33,7 @@ build-docker-image: check-compliance
 	$(call install_app,"storygraph","storygraph/storygraph.go",true)
 
 	$(call echo_purple,"Building docker image $(DOCKER_TAG)...")
-	@docker build -t $(DOCKER_TAG) .
+	@docker build --build-arg CONTAINER_PORT -t $(DOCKER_TAG) .
 	$(call echo_green,"Successfully built image $(DOCKER_TAG)")
 
 	@rm "storygraph"
