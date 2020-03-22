@@ -1,0 +1,12 @@
+#@data/values
+---
+sg:
+  name: storygraph
+  namespace: storygraph
+  dockerImage: angler98/storygraph:latest
+  imagePullPolicy: Always
+  containerPort: 8080
+  hostPort: 8080
+  replicas: 3
+  str:
+    containerPort: "8080"

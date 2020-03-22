@@ -1,0 +1,8 @@
+FROM scratch
+ADD storygraph ./
+
+ARG CONTAINER_PORT
+ENV PORT $CONTAINER_PORT
+EXPOSE $CONTAINER_PORT
+
+ENTRYPOINT [ "/storygraph" ]
