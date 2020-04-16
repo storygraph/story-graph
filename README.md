@@ -32,22 +32,3 @@ make clean-docker-image # delete local docker image
 make run-docker-image # run docker image
 make push-docker-image # push docker image to a docker registry
 ```
-
-### Kubernetes
-#### Prerequisites
-You need to have the following tools installed:
-- kubectl
-- k14s utilities, like ytt and kapp
-You would need a Unix (or Unix-like) OS and a running Kubernetes cluster.
-
-#### Use cases
-You can deploy like so:
-```bash
-ytt -f chart | kapp deploy -a sg -f- --yes # installs storygraph to your k8s cluster
-kubectl get deployments -n storygraph # view the storygraph deployment
-kubectl -n storygraph port-forward service/storygraph-service 8080:8080 # forward port to localhost:8080
-```
-Now you should be able to access your storygraph instance like so:
-```bash
-curl localhost:8080/greet 
-```
