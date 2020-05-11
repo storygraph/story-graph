@@ -1,4 +1,7 @@
-FROM scratch
+FROM alpine:3.7
+
+RUN apk --no-cache add curl
+
 ADD storygraph ./
 
 ARG CONTAINER_PORT

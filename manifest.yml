@@ -1,0 +1,7 @@
+---
+applications:
+- name: sg
+  random-route: true
+  docker:
+    image: angler98/storygraph:latest
+    

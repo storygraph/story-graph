@@ -1,0 +1,16 @@
+[
+  {
+    "protocol": "icmp",
+    "destination": "195.191.148.130/0",
+    "type": 0,
+    "code": 0,
+    "description": "Allow icmp traffic"
+  },
+  {
+    "protocol": "tcp",
+    "destination": "195.191.148.130/0",
+    "ports": "80,443",
+    "log": true,
+    "description": "Allow http and https traffic"
+  }
+]
