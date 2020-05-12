@@ -58,6 +58,10 @@ push-docker-image:
 	@docker push $(DOCKER_TAG)
 	$(call echo_green,"Successfully pushed $(DOCKER_TAG)")
 
+.PHONY: run-tests
+run-tests:
+	@ginkgo ./...
+
 # Define echo colors
 # Use colors as follows:
 # - red for error
