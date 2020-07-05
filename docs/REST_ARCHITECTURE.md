@@ -210,12 +210,12 @@ __Sample Response:__
 }
 ``` 
 
-### Update a story
-Uploads a empty story
+### Update a Event
+Update a story by appending or replacing it's changelog
 
 | Endpoint | Type | Parameters | Return Codes |
 | -------- | ---- | ---------- | ------------ |
-| */api/v1/stories/{storyID}/events{story_id}* | `PATCH` | *storyID* - *(required)* ID for the requested story <br>*eventID* - *(required)* ID for the requested event <br>*title* - New title for the event <br><br>*changelog_action* - *(required if changelog is used)* <br>`append` - append items to the end of changelog <br>`replace` - repalce the current changelog with the \<changelog\> parameter <br><br>*changelog* - a valid changelog array in JSON [1] | __200__ - OK <br>__404__ - Story/Event not found <br> __401__ - Unauthorized | 
+| */api/v1/stories/{storyID}/events/{eventID}* | `PATCH` | *storyID* - *(required)* ID for the requested story <br>*eventID* - *(required)* ID for the requested event <br>*title* - New title for the event <br><br>*changelog_action* - *(required if changelog is used)* <br>`append` - append items to the end of changelog <br>`replace` - repalce the current changelog with the \<changelog\> parameter <br><br>*changelog* - a valid changelog array in JSON [1] | __200__ - OK <br>__404__ - Story/Event not found <br> __401__ - Unauthorized | 
 
 __[1]__ - Changelog JSON format:
 ```javascript
@@ -279,12 +279,135 @@ Delete an event
 
 | Endpoint | Type | Parameters | Return Codes |
 | -------- | ---- | ---------- | ------------ |
-| */api/v1/stories/{storyID}/events{story_id}* | `DELETE` | *storyID* - *(required)* ID for the requested story <br>*eventID* - *(required)* ID for the requested event | __200__ - OK <br>__404__ - Story/Event not found <br> __401__ - Unauthorized | 
+| */api/v1/stories/{storyID}/events/{eventID}* | `DELETE` | *storyID* - *(required)* ID for the requested story <br>*eventID* - *(required)* ID for the requested event | __200__ - OK <br>__404__ - Story/Event not found <br> __401__ - Unauthorized | 
 
 __Sample Response:__
 ```javascript
 {
-    "message": "Event with id '<story_id>' was successfully deleted",
+    "message": "Event with id '<eventID>' was successfully deleted",
 }
 //QUESTION: We can return the deleted event details here?
+``` 
+
+
+## Weenies
+
+### List Weenies
+Returns a list of weenies.
+
+| Endpoint | Type | Parameters | Return Codes |
+| -------- | ---- | ---------- | ------------ |
+| */api/v1/stories/{storyID}/weenies/list | `GET` |  *storyID* - *(required)* ID for the requested story | __200__ - OK <br>__404__ - Story not found <br> __401__ - Unauthorized | 
+
+__Sample Response:__
+```javascript
+[
+    {
+        "id": 0,
+        "name": "Frodo",
+    },
+    {
+        "id": 1,
+        "name": "Sam",
+    }, 
+    {
+        "id": 2,
+        "name": "Gandalf",
+    },
+    {
+        "id": 3,
+        "name": "Pippin",
+    }
+]
+```
+__Note:__ If the requested story does not have any weenies, then the returned JSON is:
+
+```javascript
+[]
+```
+
+### Get Weenie
+Returns event details.
+
+| Endpoint | Type | Parameters | Return Codes |
+| -------- | ---- | ---------- | ------------ |
+| */api/v1/stories/{storyID}/weenies/{weenieID}* | `GET` | *storyID* - *(required)* ID for the requested story <br>*weenieID* - *(required)* ID for the requested event | __200__ - OK <br>__404__ - Story/Weenie not found <br> __401__ - Unauthorized | 
+
+__Sample Response:__
+```javascript
+{
+    "id": 0,
+    "name": "Frodo",
+    "status": "alive",
+    "location": "Middle-earth",
+    ....
+}
+``` 
+
+### Upload Weenie
+Appends an empty event to the end of the timeline
+
+| Endpoint | Type | Parameters | Return Codes |
+| -------- | ---- | ---------- | ------------ |
+| */api/v1/stories/{storyID}/weenies/upload* | `POST` | *storyID* - *(required)* Title for the new story <br>*name* - *(required)* Name for the new weenie <br> *location* - Weenie initial location <br> *status* - Weenie initial status | __200__ - OK <br>__404__ - Story not found <br> __401__ - Unauthorized | 
+
+__Sample Request:__
+```javascript
+{
+    "name": "Frodo",
+    "status": "alive",
+    "location": "Middle-earth"
+}
+``` 
+
+__Sample Response:__
+```javascript
+{
+    "id": 0,
+    "name": "Frodo",
+    "status": "alive",
+    "location": "Middle-earth"
+}
+``` 
+
+### Update a Weenie
+Uploads a weenie
+
+| Endpoint | Type | Parameters | Return Codes |
+| -------- | ---- | ---------- | ------------ |
+| */api/v1/stories/{storyID}/weenies/{weenieID}* | `PATCH` | *storyID* - *(required)* ID for the requested story <br>*weenieID* - *(required)* ID for the requested weenie <br><br>*change* - a valid JSON object [1] | __200__ - OK <br>__404__ - Story/Event not found <br> __401__ - Unauthorized | 
+
+__Note:__ If a property already exists the value will be replaced with one from the request
+
+__[1] Sample Request:__
+```javascript
+{
+    "age": 50,
+}
+``` 
+
+__Sample Response:__
+```javascript
+{
+    "id": 0,
+    "name": "Frodo",
+    "status": "alive",
+    "location": "Middle-earth",
+    "age": 50
+}
+``` 
+
+### Delete a Weenie
+Delete a Weenie 
+
+| Endpoint | Type | Parameters | Return Codes |
+| -------- | ---- | ---------- | ------------ |
+| */api/v1/stories/{storyID}/events/{weenieID}* | `DELETE` | *storyID* - *(required)* ID for the requested story <br>*weenieID* - *(required)* ID for the requested event | __200__ - OK <br>__404__ - Story/Event not found <br> __401__ - Unauthorized | 
+
+__Sample Response:__
+```javascript
+{
+    "message": "Weenie with id '<weenieID>' was successfully deleted",
+}
+//QUESTION: We can return the deleted weenie details here?
 ``` 
