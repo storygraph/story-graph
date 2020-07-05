@@ -4,18 +4,18 @@ REST API Documentation for communication between the client and the server.
 
 __Note:__ All requests return a valid *JSON* objects.
 
+**********
+
 
 
 ## Stories
-**********
 
 ### List Stories
 Returns a lsit of stories.
-Needs *Colaborator*/*Author* rights for the project and *Read* rights stories.
 
 | Endpoint | Type | Parameters | Return Codes |
 | -------- | ---- | ---------- | ------------ |
-| */api/v1/project/{project_id}/stories/{story_id}* | `GET` | *project_id* - ID of the project <br> *story_id* - ID of the requested story | __200__ - Everything is Okay <br>__404__ - Story not found <br> __401__ - Not Authenticated <br> __500__ - Server error | 
+| */api/v1//stories/list | `GET` | - | __200__ - OK <br>__404__ - Story not found <br> __401__ - Unauthorized | 
 
 __Sample Response:__
 ```javascript
@@ -42,21 +42,18 @@ __Sample Response:__
     },
 ],
 ```
-__Note:__ If the requesting user has *Colaborator*/*Author* rights for the project, but has no *Read* right for any of the stories, then the returned JSON is::
+__Note:__ If the requesting user does not have any stories, then the returned JSON is:
 
 ```javascript
 []
 ```
 
-
-
 ### Get Story
 Returns story details.
-Needs *Colaborator*/*Author* rights for the project and *Read* rights for the requested story.
 
 | Endpoint | Type | Parameters | Return Codes |
 | -------- | ---- | ---------- | ------------ |
-| */api/v1/project/{project_id}/stories/{story_id}* | `GET` | *project_id* - ID of the project <br> *story_id* - ID of the requested story | __200__ - Everything is Okay <br>__404__ - Story not found <br> __401__ - Not Authenticated <br> __500__ - Server error | 
+| */api/v1/stories/{story_id}* | `GET` | *story_id* - ID of the requested story | __200__ - OK <br>__404__ - Story not found <br> __401__ - Unauthorized | 
 
 __Sample Response:__
 ```javascript
@@ -68,4 +65,51 @@ __Sample Response:__
 }
 ``` 
 
+### Upload Story
+Uploads a empty story
+
+| Endpoint | Type | Parameters | Return Codes |
+| -------- | ---- | ---------- | ------------ |
+| */api/v1/stories/upload* | `POST` | *title* - Title for the new story | __200__ - OK <br>__404__ - Story not found <br> __401__ - Unauthorized <br> __422__ - Unprocessable Entity (probably the story title is not unique) | 
+
+__Sample Response:__
+```javascript
+{
+    "id": "<new_id>",
+    "title": "<Story Title>",
+    "lastEdited": "dd-mm-yyyy",
+}
+``` 
+
+### Update a story
+Uploads a empty story
+
+| Endpoint | Type | Parameters | Return Codes |
+| -------- | ---- | ---------- | ------------ |
+| */api/v1/stories/{story_id}* | `PATCH` | *story_id* - *(required)* ID of the requested story <br> *title* - (string) New title for the story <br>*current_event_id* - change the id of current event, can be `null` | __200__ - OK <br>__404__ - Story not found <br> __401__ - Unauthorized | 
+
+__Sample Response:__
+```javascript
+{
+    "id": "<story_id>",
+    "title": "<Story Title>",
+    "lastEdited": "dd-mm-yyyy",
+    "currentEvent": "Title of the <current_event_id>",
+}
+``` 
+
+### Delete a story
+Delete a story
+
+| Endpoint | Type | Parameters | Return Codes |
+| -------- | ---- | ---------- | ------------ |
+| */api/v1/stories/{story_id}* | `DELETE` | *story_id* - *(required)* ID of the requested story | __200__ - OK <br>__404__ - Story not found <br> __401__ - Unauthorized | 
+
+__Sample Response:__
+```javascript
+{
+    "message": "Story with id '<story_id>' was successfully deleted",
+}
+//QUESTION: We can return the deleted story details here?
+``` 
 
