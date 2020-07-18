@@ -12,6 +12,10 @@ var cfg *StorygraphConfig
 func init() {
 	var err error
 
+	if cfg != nil {
+		return
+	}
+
 	cfg, err = newStoryGraphConfig()
 	if err != nil {
 		log.Fatalf("Error reading config: %s", err.Error())

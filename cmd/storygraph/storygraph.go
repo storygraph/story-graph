@@ -6,6 +6,7 @@ import (
 	"net/http"
 
 	"github.com/storygraph/story-graph/pkg/config"
+	_ "github.com/storygraph/story-graph/pkg/db"
 )
 
 func greet(w http.ResponseWriter, req *http.Request) {
