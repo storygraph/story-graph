@@ -26,6 +26,16 @@ Before committing:
 - run `make clean-code`
 - run `shellcheck` on scripts
 
+## :hammer: Build
+
+To build just run:
+
+```bash
+go get ./...
+# Export the env vars as described below.
+make build
+```
+
 ## Technologies
 
 The server is written in `go` and tests are in `ginkgo`. For db migrations and orm we are using [gorm](https://gorm.io/). The project is built with a `GNU Makefile`.
@@ -55,5 +65,8 @@ make push-docker-image # push docker image to a docker registry
 Most of the variable you need would be loaded from `.envrc`. You would additionally need:
 - `DOCKERHUB_USERNAME` - Your dockerhub username
 - `DOCKERHUB_PASSWORD` - Your dockerhub password
+- `DB_HOST` - Your db host
+- `DB_PORT` - Your db port
 - `DB_USER` - Your postgre db user
 - `DB_PASS` - Your postgre db password
+- `DB_NAME` - Your postgre db name

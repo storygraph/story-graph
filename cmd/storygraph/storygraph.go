@@ -4,36 +4,21 @@ import (
 	"fmt"
 	"log"
 	"net/http"
-	"os"
-)
 
-const (
-	// EnvPort is the name of the env var for port.
-	EnvPort = "PORT"
-
-	// DefaultPort to be listened on.
-	DefaultPort = "8080"
+	"github.com/storygraph/story-graph/pkg/config"
 )
 
 func greet(w http.ResponseWriter, req *http.Request) {
-	fmt.Fprintf(w, "Greetings from StoryGraph!\n")
+	cfg := config.GetConfig()
+
+	fmt.Fprintf(w, cfg.DBHost+cfg.DBName)
 	log.Print("Request taken")
-}
-
-func getPort() string {
-	port := os.Getenv(EnvPort)
-
-	if len(port) == 0 {
-		port = DefaultPort
-	}
-
-	log.Printf("Using PORT %s", port)
-
-	return port
 }
 
 func main() {
 	http.HandleFunc("/greet", greet)
 
-	log.Fatal(http.ListenAndServe(fmt.Sprintf(":%s", getPort()), nil))
+	cfg := config.GetConfig()
+
+	log.Fatal(http.ListenAndServe(fmt.Sprintf(":%d", cfg.Port), nil))
 }
