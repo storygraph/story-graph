@@ -8,7 +8,7 @@ import (
 	_ "github.com/jinzhu/gorm/dialects/postgres"
 
 	"github.com/storygraph/story-graph/pkg/config"
-	"github.com/storygraph/story-graph/pkg/db/dto"
+	"github.com/storygraph/story-graph/pkg/db/dao"
 )
 
 var db *gorm.DB
@@ -19,10 +19,12 @@ func init() {
 	}
 
 	if err := connectToDB(); err != nil {
-		log.Fatalf("Error connecting to db: %s", err.Error())
+		log.Fatalf("Error connecting to DB: %s", err.Error())
 	}
 
-	migrateDB()
+	if err := migrateDB(); err != nil {
+		log.Fatalf("Error during DB migration: %s", err.Error())
+	}
 }
 
 func GetConn() *gorm.DB {
@@ -38,18 +40,31 @@ func connectToDB() (err error) {
 		return err
 	}
 
+	log.Printf("Successfully connected to DB %s on %s:%d...", cfg.DBName, cfg.DBHost, cfg.DBPort)
 	return nil
 }
 
-func migrateDB() (err error) {
-	dataModels := []dto.DataModel{
-		&dto.RelationType{},
-		&dto.Relation{},
+func migrateDB() error {
+	// Using null values as of only the data model structures are needed.
+	dataModels := []dao.DataModel{
+		dao.NewStory(db, nil),
+		dao.NewWeenie(db, nil, nil, nil, 0),
+		dao.NewRelationType(db, nil),
+		dao.NewRelationDelta(db, nil, false, 0, 0, 0),
+		dao.NewWeenieDelta(db, nil, nil, 0, 0, false, 0),
+		dao.NewPossessionDelta(db, nil, nil, false, 0),
+		dao.NewTagDelta(db, nil, nil, false, 0),
+		dao.NewEvent(db, nil, 0, 0),
+		dao.NewAction(db, nil, []uint{}, 0, 0, 0),
+		dao.NewSection(db, nil, 0, 0),
 	}
 
 	for _, dataModel := range dataModels {
-		dataModel.Migrate(db)
+		if err := dataModel.Migrate(); err != nil {
+			return err
+		}
 	}
 
+	log.Printf("Successfully migrated DB schema...")
 	return nil
 }
