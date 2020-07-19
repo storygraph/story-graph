@@ -86,7 +86,7 @@ endef
 
 define check_cmds
 	$(foreach cmd, $(1),
-		$(if $(shell command -v $(cmd) &> /dev/null || echo "not found"),
+		$(if $(bash command -v $(cmd) &> /dev/null || echo "not found"),
 		@# then
 			$(call echo_red,"$(cmd) not found")
 			@exit 1)
@@ -113,7 +113,7 @@ endef
 # Uninstall app
 # 1 - app_name
 define uninstall_app
-	$(if $(shell test -f "$(GOBIN)/$(1)" &> /dev/null && echo "found"),
+	$(if $(bash test -f "$(GOBIN)/$(1)" &> /dev/null && echo "found"),
 	@# then
 		$(call echo_purple,"Uninstalling $(GOBIN)/$(1)...")
 		@rm "$(GOBIN)/$(1)",
@@ -123,7 +123,7 @@ endef
 
 # clean_docker_image is put in a function maintain indempotency
 define clean_docker_image
-	$(if $(shell docker images -q $(DOCKER_TAG)),
+	$(if $(bash docker images -q $(DOCKER_TAG)),
 	@# then
 		$(call echo_purple,"Removing docker image $(DOCKER_TAG)...")
 		@docker image rm $(DOCKER_TAG)

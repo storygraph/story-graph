@@ -5,6 +5,8 @@ import (
 	"log"
 	"net/http"
 	"os"
+
+	"github.com/storygraph/story-graph/api/v1/router"
 )
 
 const (
@@ -33,7 +35,8 @@ func getPort() string {
 }
 
 func main() {
-	http.HandleFunc("/greet", greet)
-
-	log.Fatal(http.ListenAndServe(fmt.Sprintf(":%s", getPort()), nil))
+	// http.HandleFunc("/greet", greet)
+	Router := router.New()
+	Router.Run()
+	// log.Fatal(http.ListenAndServe(fmt.Sprintf(":%s", getPort()), nil))
 }
