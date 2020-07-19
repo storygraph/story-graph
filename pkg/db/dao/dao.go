@@ -13,7 +13,7 @@ type DataModel interface {
 	Migrate() error
 }
 
-type DTO interface {
+type DAO interface {
 	DataModel
 	// Load fetches the data by id.
 	Load() error
