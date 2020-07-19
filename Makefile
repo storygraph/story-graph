@@ -46,7 +46,7 @@ clean-docker-image: check-compliance
 .PHONY: run-docker-image
 run-docker-image:
 	$(call echo_purple,"Starting docker image $(DOCKER_TAG)...")
-	@docker run -d -p $(HOST_PORT):$(CONTAINER_PORT) $(DOCKER_TAG)
+	@docker run -e DB_HOST -e DB_PORT -e DB_USER -e DB_PASS -e DB_NAME -d -p $(HOST_PORT):$(CONTAINER_PORT) $(DOCKER_TAG)
 	$(call echo_green,"Successfully started $(DOCKER_TAG)")
 
 .PHONY: push-docker-image
